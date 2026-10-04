@@ -13,6 +13,11 @@ dependencies = []
 oop = "oop:main"
 class = "oop.classes:main"
 product = "oop.practice.product:main"
+house = "oop.practice.house:app"
+atr = "oop.practice.class_attrs:myproduct"
+bug = "oop.practice.shared_list_bug:main"
+fix = "oop.practice.shared_list_fix:main"
+cart = "oop.practice.cart_demo:main"
 
 [build-system]
 requires = ["uv_build>=0.12.3,<0.13.0"]
