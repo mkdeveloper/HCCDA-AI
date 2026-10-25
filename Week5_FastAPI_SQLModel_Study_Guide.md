@@ -74,11 +74,12 @@ A decorator is a function that takes another function and returns a new one. The
 `decorator_intro.py`
 
 ```python
-def shout(func):          # 1. takes a function as its input
-    def wrapper():        # 2. a new function that wraps the old one
-        result = func()   # 3. call the original function
+def shout(func):  # 1. takes a function as its input
+    def wrapper():  # 2. a new function that wraps the old one
+        result = func()  # 3. call the original function
         return result.upper()  # 4. change what it returns
-    return wrapper        # 5. hand back the new function
+
+    return wrapper  # 5. hand back the new function
 
 
 def greet():
@@ -105,6 +106,7 @@ Run it with `python decorator_intro.py`. It prints `HELLO`, although `greet` ret
 def shout(func):
     def wrapper():
         return func().upper()
+
     return wrapper
 
 
@@ -134,10 +136,11 @@ The `@shout` line sits directly above `def wave()`. It means the same as line 6 
 routes = {}  # a place to remember the routes
 
 
-def get(path):             # takes the path, returns a decorator
-    def register(func):    # the decorator: takes the function
+def get(path):  # takes the path, returns a decorator
+    def register(func):  # the decorator: takes the function
         routes[path] = func  # remember the function under its path
-        return func          # give it back unchanged
+        return func  # give it back unchanged
+
     return register
 
 
@@ -471,7 +474,9 @@ raw_url: str | None = os.environ.get("DATABASE_URL")
 if not raw_url:
     raise RuntimeError("Set DATABASE_URL to your Neon connection string first")
 
-DATABASE_URL: str = make_url(raw_url)  # after the check above, raw_url is narrowed to str
+DATABASE_URL: str = make_url(
+    raw_url
+)  # after the check above, raw_url is narrowed to str
 engine = create_engine(DATABASE_URL, pool_recycle=300)
 
 
@@ -546,7 +551,7 @@ Replace `src/mart_api/main.py` with this skeleton. It has the lifespan and the a
 `src/mart_api/main.py` (skeleton)
 
 ```python
-from collections.abc import AsyncIterator
+from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
@@ -555,12 +560,17 @@ from mart_api.database import create_db_and_tables
 
 
 @asynccontextmanager
-async def lifespan(app: FastAPI) -> AsyncIterator[None]:
+async def lifespan(app: FastAPI) -> AsyncGenerator[None]:
     create_db_and_tables()  # runs once, before the first request
     yield
 
 
 app: FastAPI = FastAPI(title="Mart API", lifespan=lifespan)
+
+
+@app.get("/")
+async def read_root() -> dict[str, str]:
+    return {"Hello": "World"}
 ```
 
 Restart `uv run fastapi dev`. The table now exists in Neon. To check, open the SQL Editor in the Neon console and run:
