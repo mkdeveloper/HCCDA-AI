@@ -7,7 +7,11 @@ authors = [
     { name = "mkdeveloper", email = "khubaib.mk@gmail.com" }
 ]
 requires-python = ">=3.13"
-dependencies = []
+dependencies = [
+    "numpy>=2.5.4",
+    "openpyxl>=3.1.5",
+    "pandas>=3.1.1",
+]
 
 [project.scripts]
 pandas-lab = "pandas_lab:main"
@@ -15,3 +19,8 @@ pandas-lab = "pandas_lab:main"
 [build-system]
 requires = ["uv_build>=0.12.3,<0.13.0"]
 build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "ipykernel>=7.4.0",
+]
